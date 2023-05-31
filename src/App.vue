@@ -1,30 +1,17 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+    <div class="container">
+        <nav class="nav nav-pills nav-justified border-bottom border-2 border-primary">
+            <router-link class="nav-link" :class="{active: this.$route.name === 'home'}" aria-current="page" to="/">Личный кабинет</router-link>
+            <router-link class="nav-link" :class="{active: this.$route.name === 'orders'}" to="#">Заказы</router-link>
+            <router-link class="nav-link" :class="{active: this.$route.name === 'chats'}" to="#">Чаты</router-link>
+            <router-link class="nav-link" :class="{active: this.$route.name === 'about'}" to="/about">О проекте</router-link>
+        </nav>
+        <router-view/>
+    </div>
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>
+<script setup>
+
+</script>
