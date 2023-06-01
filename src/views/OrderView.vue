@@ -1,10 +1,16 @@
 <script>
 import {defineComponent} from 'vue'
 import OrderCard from "@/components/OrderCard.vue";
+import profileUser from "@/mixins/profileUser";
 
 export default defineComponent({
     name: "OrderView",
     components: {OrderCard},
+    mixins: [profileUser],
+    mounted() {
+        if(!this.isLogin)
+            this.$router.push('/')
+    },
     data() {
         return {
             orders: [
