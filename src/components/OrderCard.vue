@@ -10,7 +10,7 @@ export default {
                 },
                 COMMERCIAL: {
                     text: "Коммерческое"
-                }
+                },
             },
             cleaningTypes: {
                 REGULAR: {
@@ -21,7 +21,7 @@ export default {
                 },
                 AFTER_REPAIR: {
                     text: "После ремонта"
-                }
+                },
             },
             orderStates: {
                 COMPLETED: {
@@ -35,7 +35,7 @@ export default {
                 },
                 NO_EMPLOYEE: {
                     text: "Нет работника"
-                }
+                },
             }
         }
     },
@@ -56,6 +56,13 @@ export default {
                 cleanerId: 4
             }
         }
+    },
+    methods: {
+        getTextStatus(arr, key){
+            if(key === undefined)
+                return 'none';
+            return arr[key].text
+        }
     }
 }
 </script>
@@ -67,13 +74,13 @@ export default {
                 <div class="card-title">
                     <div class="row row-cols-2">
                         <div class="col">
-                            {{ orderData.theDate.toLocaleDateString() }} {{ orderData.startTime }}:00 - {{ orderData.duration }} ч.
+                            {{ orderData.theDate }} {{ orderData.startTime }}:00 - {{ orderData.duration }} ч.
                         </div>
                         <div class="col text-end" :class="{'text-primary': orderData.orderStatus === 'NO_EMPLOYEE',
                         'text-success': orderData.orderStatus === 'COMPLETED',
                         'text-danger': orderData.orderStatus === 'WAITING_FOR_PAYMENT',
                         'text-secondary': orderData.orderStatus === 'PAID'}">
-                            {{ orderStates[orderData.orderStatus].text }}
+                            {{ getTextStatus(orderStates, orderData.orderStatus) }}
                         </div>
                     </div>
                 </div>
@@ -93,7 +100,7 @@ export default {
                         <b>Тип помещения:</b>
                     </div>
                     <div class="col">
-                        {{ roomTypes[orderData.rootType].text }}
+                        {{ getTextStatus(roomTypes, orderData.roomType) }}
                     </div>
                 </div>
                 <div class="row row-cols-2">
@@ -101,7 +108,7 @@ export default {
                         <b>Тип уборки:</b>
                     </div>
                     <div class="col">
-                        {{ cleaningTypes[orderData.cleaningType].text }}
+                        {{ getTextStatus(cleaningTypes, orderData.cleaningType) }}
                     </div>
                 </div>
                 <div class="row row-cols-2">
@@ -110,6 +117,15 @@ export default {
                     </div>
                     <div class="col">
                         {{ orderData.cost }} р
+                    </div>
+                </div>
+
+                <div class="row row-cols-2">
+                    <div class="col">
+                        <b>Исполнитель:</b>
+                    </div>
+                    <div class="col">
+                        {{ orderData.cleaner.name }} {{ orderData.cleaner.surname }} {{ orderData.cleaner.phoneNumber === undefined ? '' : ', ' + orderData.cleaner.phoneNumber }}
                     </div>
                 </div>
             </div>

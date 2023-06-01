@@ -15,5 +15,13 @@ export default {
         ...mapActions({
             loadProfileState: 'profile/loadProfile'
         }),
+        isRoleOr(role){
+            for (let r of role){
+                console.log(r)
+                if(this.getRoleUser === r)
+                    return true;
+            }
+            return false;
+        }
     }
 }

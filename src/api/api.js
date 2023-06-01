@@ -23,6 +23,9 @@ const api = {
     profile: function () {
         return axios.get(config.api + "/profile", {headers: this.getHeadersLogin()});
     },
+    loadOrders: function () {
+        return axios.get(config.api + "/orders", {headers: this.getHeadersLogin()});
+    },
 
 };
 

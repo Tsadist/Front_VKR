@@ -2,176 +2,17 @@
 import {defineComponent} from 'vue'
 import OrderCard from "@/components/OrderCard.vue";
 import profileUser from "@/mixins/profileUser";
+import orders from "@/mixins/orders";
 
 export default defineComponent({
     name: "OrderView",
     components: {OrderCard},
-    mixins: [profileUser],
+    mixins: [profileUser, orders],
     mounted() {
-        if(!this.isLogin)
+        if (!this.isLogin)
             this.$router.push('/')
+        this.loadOrders()
     },
-    data() {
-        return {
-            orders: [
-                {
-                    cost: 200,
-                    orderStatus: "WAITING_FOR_PAYMENT",
-                    id: 1,
-                    rootType: 'RESIDENTIAL',
-                    cleaningType: "REGULAR",
-                    area: 24.5,
-                    theDate: new Date(),
-                    startTime: 10,
-                    duration: 2,
-                    cleanerId: 4
-                },
-                {
-                    cost: 4000,
-                    orderStatus: "PAID",
-                    id: 1,
-                    rootType: 'COMMERCIAL',
-                    cleaningType: "AFTER_REPAIR",
-                    area: 24.5,
-                    theDate: new Date(),
-                    startTime: 9,
-                    duration: 2,
-                    cleanerId: 4
-                },
-                {
-                    cost: 50,
-                    orderStatus: "NO_EMPLOYEE",
-                    id: 1,
-                    rootType: 'RESIDENTIAL',
-                    cleaningType: "GENERAL",
-                    area: 24.5,
-                    theDate: new Date(),
-                    startTime: 7,
-                    duration: 5,
-                    cleanerId: 4
-                }, {
-                    cost: 200,
-                    orderStatus: "WAITING_FOR_PAYMENT",
-                    id: 1,
-                    rootType: 'RESIDENTIAL',
-                    cleaningType: "REGULAR",
-                    area: 24.5,
-                    theDate: new Date(),
-                    startTime: 10,
-                    duration: 2,
-                    cleanerId: 4
-                },
-                {
-                    cost: 4000,
-                    orderStatus: "PAID",
-                    id: 1,
-                    rootType: 'COMMERCIAL',
-                    cleaningType: "AFTER_REPAIR",
-                    area: 24.5,
-                    theDate: new Date(),
-                    startTime: 9,
-                    duration: 2,
-                    cleanerId: 4
-                },
-                {
-                    cost: 50,
-                    orderStatus: "NO_EMPLOYEE",
-                    id: 1,
-                    rootType: 'RESIDENTIAL',
-                    cleaningType: "GENERAL",
-                    area: 24.5,
-                    theDate: new Date(),
-                    startTime: 7,
-                    duration: 5,
-                    cleanerId: 4
-                },
-                {
-                    cost: 200,
-                    orderStatus: "WAITING_FOR_PAYMENT",
-                    id: 1,
-                    rootType: 'RESIDENTIAL',
-                    cleaningType: "REGULAR",
-                    area: 24.5,
-                    theDate: new Date(),
-                    startTime: 10,
-                    duration: 2,
-                    cleanerId: 4
-                },
-                {
-                    cost: 200,
-                    orderStatus: "COMPLETED",
-                    id: 1,
-                    rootType: 'RESIDENTIAL',
-                    cleaningType: "REGULAR",
-                    area: 24.5,
-                    theDate: new Date(),
-                    startTime: 10,
-                    duration: 2,
-                    cleanerId: 4
-                },
-                {
-                    cost: 4000,
-                    orderStatus: "PAID",
-                    id: 1,
-                    rootType: 'COMMERCIAL',
-                    cleaningType: "AFTER_REPAIR",
-                    area: 24.5,
-                    theDate: new Date(),
-                    startTime: 9,
-                    duration: 2,
-                    cleanerId: 4
-                },
-                {
-                    cost: 50,
-                    orderStatus: "NO_EMPLOYEE",
-                    id: 1,
-                    rootType: 'RESIDENTIAL',
-                    cleaningType: "GENERAL",
-                    area: 24.5,
-                    theDate: new Date(),
-                    startTime: 7,
-                    duration: 5,
-                    cleanerId: 4
-                },
-                {
-                    cost: 200,
-                    orderStatus: "WAITING_FOR_PAYMENT",
-                    id: 1,
-                    rootType: 'RESIDENTIAL',
-                    cleaningType: "REGULAR",
-                    area: 24.5,
-                    theDate: new Date(),
-                    startTime: 10,
-                    duration: 2,
-                    cleanerId: 4
-                },
-                {
-                    cost: 4000,
-                    orderStatus: "PAID",
-                    id: 1,
-                    rootType: 'COMMERCIAL',
-                    cleaningType: "AFTER_REPAIR",
-                    area: 24.5,
-                    theDate: new Date(),
-                    startTime: 9,
-                    duration: 2,
-                    cleanerId: 4
-                },
-                {
-                    cost: 50,
-                    orderStatus: "NO_EMPLOYEE",
-                    id: 1,
-                    rootType: 'RESIDENTIAL',
-                    cleaningType: "GENERAL",
-                    area: 24.5,
-                    theDate: new Date(),
-                    startTime: 7,
-                    duration: 5,
-                    cleanerId: 4
-                }
-            ]
-        }
-    }
 })
 </script>
 
@@ -182,10 +23,35 @@ export default defineComponent({
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <div class="card-text">
-                            <button class="btn btn-primary">Новый заказ</button>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                Новый заказ
+                            </button>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            ...
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row" v-if="!orders">
+            <div class="col p-3 text-center">
+                <h3>Нет заказов</h3>
             </div>
         </div>
         <div class="row row-cols-2">

@@ -13,12 +13,16 @@
                 <div class="card-body">
                     <div class="card-text">
                         <div class="row row-cols-2">
-                            <div class="col">Номер телефона</div>
-                            <div class="col">{{ profile.phoneNumber }}</div>
+                            <div class="col">ФИО</div>
+                            <div class="col">{{ profile.name }} {{ profile.surname }}</div>
                         </div>
                         <div class="row row-cols-2">
                             <div class="col">Электронная почта</div>
                             <div class="col">{{ profile.email }}</div>
+                        </div>
+                        <div class="row row-cols-2">
+                            <div class="col">Номер телефона</div>
+                            <div class="col">{{ profile.phoneNumber }}</div>
                         </div>
                         <div class="row row-cols-2" v-if="profile.role !== 'CUSTOMER'">
                             <div class="col">Ваша роль в системе</div>
