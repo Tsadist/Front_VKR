@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <div class="card">
+    <div class="card shadow-lg">
         <div class="card-body">
             <h5 class="card-title">Вход</h5>
             <div class="mb-3">
