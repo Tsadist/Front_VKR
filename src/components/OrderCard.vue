@@ -1,8 +1,11 @@
 <script>
 import {dicStatus} from "@/api/dictionary";
+import api from "@/api/api";
+import OrderInputModal from "@/components/OrderInputModal.vue";
 
 export default {
     name: "OrderCard",
+    components: {OrderInputModal},
     computed: {
         dicOrder() {
             return dicStatus.orderStatuses
@@ -18,6 +21,10 @@ export default {
         return {}
     },
     props: {
+        updateView:{
+            type: Function,
+            default: function (){}
+        },
         orderData: {
             type: Object,
             default: {
@@ -40,9 +47,25 @@ export default {
             console.log(arr)
             if (key === undefined)
                 return 'none';
+            if(typeof key === 'object')
+                return key.text;
             if(arr[key] === undefined)
                 return 'none-' + key;
             return arr[key].text
+        },
+        deleteThis(){
+            api.deleteOrder(this.orderData.id).then(value => this.updateView())
+        },
+        editOk(value){
+            const data = {
+                "area": value.area,
+                "roomType": value.roomType.value,
+                "cleaningType": value.cleaningType.value,
+                "theDate": value.theDate,
+                "startTime": value.startTime,
+                "additionServicesId": value.additionServicesId
+            };
+            api.editOrder(value.id, data);
         }
     }
 }
@@ -57,10 +80,10 @@ export default {
                         <div class="col">
                             {{ orderData.theDate }} {{ orderData.startTime }}:00 - {{ orderData.duration }} ч.
                         </div>
-                        <div class="col text-end" :class="{'text-primary': orderData.orderStatus === 'NO_EMPLOYEE',
-                        'text-success': orderData.orderStatus === 'COMPLETED',
-                        'text-danger': orderData.orderStatus === 'WAITING_FOR_PAYMENT',
-                        'text-secondary': orderData.orderStatus === 'PAID'}">
+                        <div class="col text-end" :class="{'text-primary': orderData.orderStatus.value === 'NO_EMPLOYEE',
+                        'text-success': orderData.orderStatus.value === 'COMPLETED',
+                        'text-danger': orderData.orderStatus.value === 'WAITING_FOR_PAYMENT',
+                        'text-secondary': orderData.orderStatus.value === 'PAID'}">
                             {{ getTextStatus(dicOrder, orderData.orderStatus) }}
                         </div>
                     </div>
@@ -105,30 +128,31 @@ export default {
                     <div class="col">
                         <b>Исполнитель:</b>
                     </div>
-                    <div class="col" v-if="orderData.orderStatus !== 'NO_EMPLOYEE'">
+                    <div class="col" v-if="orderData.orderStatus.value !== 'NO_EMPLOYEE'">
                         {{ orderData.cleaner.name }} {{ orderData.cleaner.surname }}
                         {{ orderData.cleaner.phoneNumber === undefined ? '' : ', ' + orderData.cleaner.phoneNumber }}
                     </div>
-                    <div class="col" v-if="orderData.orderStatus === 'NO_EMPLOYEE'">
+                    <div class="col" v-if="orderData.orderStatus.value === 'NO_EMPLOYEE'">
                         <b>Отсутствует</b>
                     </div>
                 </div>
             </div>
             <div class="card-text pt-2">
                 <div class="row row-cols-2 g-2">
-                    <div class="col" v-if="orderData.orderStatus === 'WAITING_FOR_PAYMENT'">
+                    <div class="col" v-if="orderData.orderStatus.value === 'WAITING_FOR_PAYMENT'">
                         <button class="btn btn-primary w-100">
                             Оплатить
                         </button>
                     </div>
-                    <div class="col" v-if="orderData.orderStatus === 'NO_EMPLOYEE'">
-                        <button class="btn btn-primary w-100">
+                    <div class="col" v-if="orderData.orderStatus.value === 'NO_EMPLOYEE'">
+                        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" :data-bs-target="'#edit' + orderData.id">
                             Изменить
                         </button>
+                        <order-input-modal :id="'edit' + orderData.id" :ok="editOk" :title="'Редактировать заказ'" :data="orderData"/>
                     </div>
 
-                    <div class="col" v-if="orderData.orderStatus !== 'COMPLETED'">
-                        <button class="btn btn-primary w-100">
+                    <div class="col" v-if="orderData.orderStatus.value !== 'COMPLETED'">
+                        <button class="btn btn-primary w-100" @click="deleteThis">
                             Отменить
                         </button>
                     </div>

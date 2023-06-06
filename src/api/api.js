@@ -29,6 +29,12 @@ const api = {
     createOrder: function (objData) {
         return axios.post(config.api + "/order/create", objData, {headers: this.getHeadersLogin()});
     },
+    deleteOrder: function (orderId) {
+        return axios.delete(config.api + "/order/" + orderId + '/delete', {headers: this.getHeadersLogin()});
+    },
+    editOrder: function (orderId, body) {
+        return axios.put(config.api + "/order/" + orderId + '/edit', body, {headers: this.getHeadersLogin()});
+    },
 
 };
 

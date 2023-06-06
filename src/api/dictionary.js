@@ -38,7 +38,7 @@ export const dicStatus= {
         },
         NO_EMPLOYEE: {
             text: "Нет работника",
-            value: 'NO_EMPLOYEES'
+            value: 'NO_EMPLOYEE'
         },
     }
 };

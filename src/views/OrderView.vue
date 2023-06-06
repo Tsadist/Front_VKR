@@ -5,6 +5,7 @@ import profileUser from "@/mixins/profileUser";
 import orders from "@/mixins/orders";
 import {dicStatus} from "@/api/dictionary";
 import api from "@/api/api";
+import OrderInputModal from "@/components/OrderInputModal.vue";
 
 export default defineComponent({
     name: "OrderView",
@@ -14,15 +15,9 @@ export default defineComponent({
         }
     },
     data() {
-        return {
-            area: 0.0,
-            roomType: '',
-            cleaningType: '',
-            date: new Date(),
-            hour: ''
-        }
+        return {}
     },
-    components: {OrderCard},
+    components: {OrderInputModal, OrderCard},
     mixins: [profileUser, orders],
     mounted() {
         if (!this.isLogin)
@@ -30,18 +25,18 @@ export default defineComponent({
         this.loadOrders()
     },
     methods: {
-        createOrder(){
+        createOrderOk(value){
             const objSend = {
-                "area": this.area,
-                "roomType": this.roomType.value,
-                "cleaningType": this.cleaningType.value,
-                "theDate": this.date,
-                "startTime": this.hour,
+                "area": value.area,
+                "roomType": value.roomType.value,
+                "cleaningType": value.cleaningType.value,
+                "theDate": value.theDate,
+                "startTime": value.startTime,
                 "additionServicesId": [1
                 ]
             }
             console.log(objSend);
-            api.createOrder(objSend);
+            api.createOrder(objSend).then(() => this.loadOrders());
         }
     }
 })
@@ -55,65 +50,10 @@ export default defineComponent({
                     <div class="card-body">
                         <div class="card-text">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">
+                                    data-bs-target="#createModal">
                                 Новый заказ
                             </button>
-                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Создание заказа </h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="row row-cols-1 g-2">
-                                                <div class="col">
-                                                    <label for="areaInput" class="form-label">Площадь помещения:</label>
-                                                    <input v-model="area" type="number" class="form-control" id="areaInput" step="0.1"
-                                                           min="10">
-                                                </div>
-                                                <div class="col">
-                                                    <label for="roomTypeInput" class="form-label">Тип помощения</label>
-                                                    <select v-model="roomType" id="roomTypeInput" class="form-select">
-                                                        <option disabled value="">Выберите один из вариантов</option>
-                                                        <option v-for="type in dic.roomTypes" v-bind:value="type">
-                                                            {{ type.text }}
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div class="col">
-                                                    <label for="cleaningTypeInput" class="form-label">Тип уборки</label>
-                                                    <select v-model="cleaningType" id="cleaningTypeInput"
-                                                            class="form-select">
-                                                        <option disabled value="">Выберите один из вариантов</option>
-                                                        <option v-for="type in dic.cleaningTypes" v-bind:value="type">
-                                                            {{ type.text }}
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div class="col">
-                                                    <label for="dateInput" class="form-label">Дата уборки</label>
-                                                    <input v-model="date" id="dateInput" class="form-control"
-                                                           type="date">
-                                                </div>
-                                                <div class="col">
-                                                    <label for="dateInput" class="form-label">В который час</label>
-                                                    <input v-model="hour" id="dateInput" class="form-control"
-                                                           type="number" min="0" max="24">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                Close
-                                            </button>
-                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="createOrder">Отправить</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <order-input-modal id="createModal" :ok="createOrderOk" :title="'Новый заказ'"/>
                         </div>
                     </div>
                 </div>
@@ -126,7 +66,7 @@ export default defineComponent({
         </div>
         <div class="row row-cols-2">
             <div class="col p-2" v-for="order in orders" :key="order">
-                <OrderCard class="h-100" :order-data="order"/>
+                <OrderCard class="h-100" :order-data="order" :update-view="loadOrders"/>
             </div>
         </div>
     </div>
