@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const config = {
-    api: 'http://192.168.0.16:8020',
+    api: 'http://192.168.0.11:8020',
 }
 
 const api = {
@@ -25,6 +25,9 @@ const api = {
     },
     loadOrders: function () {
         return axios.get(config.api + "/orders", {headers: this.getHeadersLogin()});
+    },
+    createOrder: function (objData) {
+        return axios.post(config.api + "/order/create", objData, {headers: this.getHeadersLogin()});
     },
 
 };

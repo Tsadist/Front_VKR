@@ -1,43 +1,21 @@
 <script>
+import {dicStatus} from "@/api/dictionary";
 
 export default {
     name: "OrderCard",
-    data() {
-        return {
-            roomTypes: {
-                RESIDENTIAL: {
-                    text: "Жилое",
-                },
-                COMMERCIAL: {
-                    text: "Коммерческое"
-                },
-            },
-            cleaningTypes: {
-                REGULAR: {
-                    text: "Регулярная",
-                },
-                GENERAL: {
-                    text: "Генеральная"
-                },
-                AFTER_REPAIR: {
-                    text: "После ремонта"
-                },
-            },
-            orderStates: {
-                COMPLETED: {
-                    text: "Завершена",
-                },
-                PAID: {
-                    text: "Оплачено"
-                },
-                WAITING_FOR_PAYMENT: {
-                    text: "Ожидает оплаты"
-                },
-                NO_EMPLOYEE: {
-                    text: "Нет работника"
-                },
-            }
+    computed: {
+        dicOrder() {
+            return dicStatus.orderStatuses
+        },
+        dicCleaning() {
+            return dicStatus.cleaningTypes
+        },
+        dicRoom() {
+            return dicStatus.roomTypes
         }
+    },
+    data() {
+        return {}
     },
     props: {
         orderData: {
@@ -58,9 +36,12 @@ export default {
         }
     },
     methods: {
-        getTextStatus(arr, key){
-            if(key === undefined)
+        getTextStatus(arr, key) {
+            console.log(arr)
+            if (key === undefined)
                 return 'none';
+            if(arr[key] === undefined)
+                return 'none-' + key;
             return arr[key].text
         }
     }
@@ -80,7 +61,7 @@ export default {
                         'text-success': orderData.orderStatus === 'COMPLETED',
                         'text-danger': orderData.orderStatus === 'WAITING_FOR_PAYMENT',
                         'text-secondary': orderData.orderStatus === 'PAID'}">
-                            {{ getTextStatus(orderStates, orderData.orderStatus) }}
+                            {{ getTextStatus(dicOrder, orderData.orderStatus) }}
                         </div>
                     </div>
                 </div>
@@ -100,7 +81,7 @@ export default {
                         <b>Тип помещения:</b>
                     </div>
                     <div class="col">
-                        {{ getTextStatus(roomTypes, orderData.roomType) }}
+                        {{ getTextStatus(dicRoom, orderData.roomType) }}
                     </div>
                 </div>
                 <div class="row row-cols-2">
@@ -108,7 +89,7 @@ export default {
                         <b>Тип уборки:</b>
                     </div>
                     <div class="col">
-                        {{ getTextStatus(cleaningTypes, orderData.cleaningType) }}
+                        {{ getTextStatus(dicCleaning, orderData.cleaningType) }}
                     </div>
                 </div>
                 <div class="row row-cols-2">
@@ -124,14 +105,34 @@ export default {
                     <div class="col">
                         <b>Исполнитель:</b>
                     </div>
-                    <div class="col">
-                        {{ orderData.cleaner.name }} {{ orderData.cleaner.surname }} {{ orderData.cleaner.phoneNumber === undefined ? '' : ', ' + orderData.cleaner.phoneNumber }}
+                    <div class="col" v-if="orderData.orderStatus !== 'NO_EMPLOYEE'">
+                        {{ orderData.cleaner.name }} {{ orderData.cleaner.surname }}
+                        {{ orderData.cleaner.phoneNumber === undefined ? '' : ', ' + orderData.cleaner.phoneNumber }}
+                    </div>
+                    <div class="col" v-if="orderData.orderStatus === 'NO_EMPLOYEE'">
+                        <b>Отсутствует</b>
                     </div>
                 </div>
             </div>
             <div class="card-text pt-2">
-                <button class="btn btn-primary" v-if="orderData.orderStatus === 'WAITING_FOR_PAYMENT'">Оплатить</button>
-                <button class="btn btn-primary" v-if="orderData.orderStatus === 'NO_EMPLOYEE'">Изменить</button>
+                <div class="row row-cols-2 g-2">
+                    <div class="col" v-if="orderData.orderStatus === 'WAITING_FOR_PAYMENT'">
+                        <button class="btn btn-primary w-100">
+                            Оплатить
+                        </button>
+                    </div>
+                    <div class="col" v-if="orderData.orderStatus === 'NO_EMPLOYEE'">
+                        <button class="btn btn-primary w-100">
+                            Изменить
+                        </button>
+                    </div>
+
+                    <div class="col" v-if="orderData.orderStatus !== 'COMPLETED'">
+                        <button class="btn btn-primary w-100">
+                            Отменить
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
