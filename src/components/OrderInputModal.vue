@@ -73,7 +73,7 @@ export default defineComponent({
                                    type="date">
                         </div>
                         <div class="col">
-                            <label for="dateInput" class="form-label">В который час</label>
+                            <label for="dateInput" class="form-label">Во сколько</label>
                             <input v-model="data.startTime" id="dateInput" class="form-control"
                                    type="number" min="0" max="24">
                         </div>
