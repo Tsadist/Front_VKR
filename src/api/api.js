@@ -23,6 +23,14 @@ const api = {
     profile: function () {
         return axios.get(config.api + "/profile", {headers: this.getHeadersLogin()});
     },
+    editProfile: function (objData) {
+        return axios.post(config.api + "/profile/edit", objData, {headers: this.getHeadersLogin()});
+    },
+    editProfileEmail: function (objData) {
+        return axios.post(config.api + "/profile/authorize/edit", objData, {headers: this.getHeadersLogin()});
+    },
+
+
     loadOrders: function () {
         return axios.get(config.api + "/orders", {headers: this.getHeadersLogin()});
     },

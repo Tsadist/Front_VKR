@@ -193,7 +193,7 @@ export default defineComponent({
                         <b>{{ week.numberWeek + 1 }}</b>
                     </div>
                     <div class="col border border-1 p-1 btn-cal"
-                         :style="{'background': new Date().getDay() == index && weekNumber() === week.numberWeek ? 'rgba(24,182,24,0.7)' : ''}"
+                         :style="{'background': new Date().getDay() == index && weekNumber() === week.numberWeek +1 ? 'rgba(24,182,24,0.7)' : ''}"
                          v-for="(dayData, index) in week.objDays" :key="dayData"
                          data-bs-toggle="tooltip" data-bs-placement="top"
                          :title="new Date(((week.numberWeek) * 7 + parseInt(index)) * 24 * 60 * 60 * 1000 + new Date(new Date().getFullYear(), 0, 1).getTime()).toLocaleDateString()">
