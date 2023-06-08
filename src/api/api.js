@@ -36,6 +36,11 @@ const api = {
         return axios.put(config.api + "/order/" + orderId + '/edit', body, {headers: this.getHeadersLogin()});
     },
 
+
+    loadSchedule: function () {
+        return axios.get(config.api + "/schedule",  {headers: this.getHeadersLogin()});
+    },
+
 };
 
 export default api;

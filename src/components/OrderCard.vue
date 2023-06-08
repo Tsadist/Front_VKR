@@ -72,7 +72,7 @@ export default {
 </script>
 
 <template>
-    <div class="card shadow-sm">
+    <div class="card shadow-sm" v-if="orderData.orderStatus !== undefined && orderData.cleaningType !== undefined">
         <div class="card-body">
             <div class="card-text">
                 <div class="card-title">
@@ -158,6 +158,11 @@ export default {
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="card shadow-sm" v-else>
+        <div class="card-body">
+            <h3>Не валидные данные</h3>
         </div>
     </div>
 </template>

@@ -81,9 +81,11 @@ export default defineComponent({
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Close
+                        Закрыть
                     </button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="ok(data)">Отправить</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="ok(data)">
+                        Отправить
+                    </button>
                 </div>
             </div>
         </div>
