@@ -14,7 +14,7 @@ export default defineComponent({
         <router-link class="nav-link" :class="{active: this.$route.name === 'order'}" to="/order" v-if="isLogin && isRoleOr(['CLEANER', 'CUSTOMER'])">Заказы</router-link>
         <router-link class="nav-link" :class="{active: this.$route.name === 'schedule'}" to="/schedule" v-if="isLogin && isRoleOr(['CLEANER'])">Расписание</router-link>
         <router-link class="nav-link" :class="{active: this.$route.name === 'workers'}" to="/workers" v-if="isLogin && isRoleOr(['MANAGER'])">Работники</router-link>
-        <router-link class="nav-link" :class="{active: this.$route.name === 'chats'}" to="/chats" v-if="isLogin">Чаты</router-link>
+        <router-link class="nav-link" :class="{active: this.$route.name === 'chats'}" to="/chats" v-if="isLogin && isRoleOr(['CUSTOMER', 'MODERATOR'])">Чаты</router-link>
         <router-link class="nav-link" :class="{active: this.$route.name === 'about'}" to="/about">О проекте</router-link>
     </nav>
 </template>

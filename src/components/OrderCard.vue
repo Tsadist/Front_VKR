@@ -21,9 +21,14 @@ export default {
         return {}
     },
     props: {
-        updateView:{
+        additionalService: {
+            type: Array,
+            default: []
+        },
+        updateView: {
             type: Function,
-            default: function (){}
+            default: function () {
+            }
         },
         orderData: {
             type: Object,
@@ -47,16 +52,16 @@ export default {
             console.log(arr)
             if (key === undefined)
                 return 'none';
-            if(typeof key === 'object')
+            if (typeof key === 'object')
                 return key.text;
-            if(arr[key] === undefined)
+            if (arr[key] === undefined)
                 return 'none-' + key;
             return arr[key].text
         },
-        deleteThis(){
+        deleteThis() {
             api.deleteOrder(this.orderData.id).then(value => this.updateView())
         },
-        editOk(value){
+        editOk(value) {
             const data = {
                 "area": value.area,
                 "roomType": value.roomType.value,
@@ -66,6 +71,14 @@ export default {
                 "additionServicesId": value.additionServicesId
             };
             api.editOrder(value.id, data);
+        },
+        getAdditionalData(id){
+            console.log("id: " + id)
+            for (let i = 0; i < this.additionalService.length; i++) {
+                if(this.additionalService[i].id === id)
+                    return this.additionalService[i];
+            }
+            return {};
         }
     }
 }
@@ -97,6 +110,14 @@ export default {
                     </div>
                     <div class="col">
                         {{ orderData.area }} м2
+                    </div>
+                </div>
+                <div class="row row-cols-2">
+                    <div class="col">
+                        <b>Адрес:</b>
+                    </div>
+                    <div class="col">
+                        {{ orderData.address === undefined || orderData.address === '' || orderData.address === null ? 'Не указан' : orderData.address }}
                     </div>
                 </div>
                 <div class="row row-cols-2">
@@ -136,6 +157,20 @@ export default {
                         <b>Отсутствует</b>
                     </div>
                 </div>
+                <div class="row row-cols-2" v-if="additionalService !== undefined">
+                    <div class="col">
+                        <b>Доп. услуги:</b>
+                    </div>
+                    <div class="col">
+                        <div class="row g-2">
+                            <div class="col"  v-for="additionalId in orderData.additionServicesId" :key="additionalId">
+                                <div class="badge rounded-pill bg-secondary">
+                                    {{ getAdditionalData(additionalId).title }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="card-text pt-2">
                 <div class="row row-cols-2 g-2">
@@ -145,10 +180,12 @@ export default {
                         </button>
                     </div>
                     <div class="col" v-if="orderData.orderStatus.value === 'NO_EMPLOYEE'">
-                        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" :data-bs-target="'#edit' + orderData.id">
+                        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal"
+                                :data-bs-target="'#edit' + orderData.id">
                             Изменить
                         </button>
-                        <order-input-modal :id="'edit' + orderData.id" :ok="editOk" :title="'Редактировать заказ'" :data="orderData"/>
+                        <order-input-modal :id="'edit' + orderData.id" :ok="editOk" :title="'Редактировать заказ'"
+                                           :data="orderData"/>
                     </div>
 
                     <div class="col" v-if="orderData.orderStatus.value !== 'COMPLETED'">

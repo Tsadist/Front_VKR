@@ -8,7 +8,16 @@
         <div class="container p-2" v-if="isLogin">
             <div class="card">
                 <div class="card-header">
-                    Ваши личные данные
+                    <div class="row">
+                        <div class="col d-flex align-items-center justify-content-start">
+                            <h5><b>Ваши личные данные</b></h5>
+                        </div>
+                        <div class="col text-end">
+                            <div class="btn btn-danger" @click="exit">
+                                Выход
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body card-info" v-if="!isEdit">
                     <div class="card-text">
@@ -86,7 +95,8 @@
                                 <label for="emailInput" class="form-label">
                                     Почта
                                 </label>
-                                <input class="form-control" id="emailInput" type="email" placeholder="email@mail.ru" v-model="profile.email">
+                                <input class="form-control" id="emailInput" type="email" placeholder="email@mail.ru"
+                                       v-model="profile.email">
                             </div>
                             <div class="col">
                                 <label class="form-label" for="passInputNew">
@@ -146,6 +156,10 @@ export default {
             api.editProfile(sendData).then(value =>
                 this.methodLoginOk()
             );
+        },
+        exit(){
+            api.token = '';
+            location.reload()
         },
         saveProfileEmail() {
             this.isEdit = false;

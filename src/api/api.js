@@ -21,18 +21,21 @@ const api = {
             });
     },
     profile: function () {
-        return axios.get(config.api + "/profile", {headers: this.getHeadersLogin()});
+        return axios.get(config.api + "/user", {headers: this.getHeadersLogin()});
     },
     editProfile: function (objData) {
-        return axios.put(config.api + "/profile/edit", objData, {headers: this.getHeadersLogin()});
+        return axios.put(config.api + "/user/edit", objData, {headers: this.getHeadersLogin()});
     },
     editProfileEmail: function (objData) {
-        return axios.put(config.api + "/profile/authorize/edit", objData, {headers: this.getHeadersLogin()});
+        return axios.put(config.api + "/user/authorize/edit", objData, {headers: this.getHeadersLogin()});
     },
 
 
     loadOrders: function () {
         return axios.get(config.api + "/orders", {headers: this.getHeadersLogin()});
+    },
+    loadAdditionService: function () {
+        return axios.get(config.api + "/addition_services", {headers: this.getHeadersLogin()});
     },
     createOrder: function (objData) {
         return axios.post(config.api + "/order/create", objData, {headers: this.getHeadersLogin()});
@@ -47,6 +50,11 @@ const api = {
 
     loadSchedule: function () {
         return axios.get(config.api + "/schedule",  {headers: this.getHeadersLogin()});
+    },
+
+
+    loadUserAll: function () {
+        return axios.get(config.api + "/user/all", {headers: this.getHeadersLogin()});
     },
 
 };

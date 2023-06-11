@@ -46,12 +46,12 @@ export default {
                 <input type="password" class="form-control" id="password" placeholder="тут" v-model="password">
             </div>
 
-            <div class="row">
+            <div class="row row-cols-1 g-2">
                 <div class="col">
                     <button type="submit" class="btn btn-primary w-100" @click="login">Войти</button>
                 </div>
                 <div class="col">
-                    <button type="submit" class="btn btn-primary w-100">Регистрация</button>
+                    <button type="submit" class="btn btn-link w-100">Регистрация</button>
                 </div>
             </div>
         </div>
