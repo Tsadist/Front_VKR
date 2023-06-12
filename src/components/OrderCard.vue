@@ -185,7 +185,7 @@ export default {
                             Изменить
                         </button>
                         <order-input-modal :id="'edit' + orderData.id" :ok="editOk" :title="'Редактировать заказ'"
-                                           :data="orderData"/>
+                                           :data="orderData" :additional-service="additionalService"/>
                     </div>
 
                     <div class="col" v-if="orderData.orderStatus.value !== 'COMPLETED'">

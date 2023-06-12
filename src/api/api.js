@@ -57,6 +57,20 @@ const api = {
         return axios.get(config.api + "/user/all", {headers: this.getHeadersLogin()});
     },
 
+
+
+    loadChats: function () {
+        return axios.get(config.api + "/chats",  {headers: this.getHeadersLogin()});
+    },
+    loadMessages: function (id) {
+        return axios.get(config.api + "/messages/" + id,  {headers: this.getHeadersLogin()});
+    },
+    createChat: function (topic) {
+        return axios.post(config.api + "/chat/create", {'topic': topic},  {headers: this.getHeadersLogin()});
+    },
+    createMessage: function (id, text) {
+        return axios.post(config.api + "/message/create", {'text': text, 'chatId': id},  {headers: this.getHeadersLogin()});
+    },
 };
 
 export default api;
