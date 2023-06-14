@@ -4,6 +4,7 @@ import OrderView from "@/views/OrderView.vue";
 import ScheduleView from "@/views/ScheduleView.vue";
 import WorkersUserView from "@/views/WorkersUserView.vue";
 import ChatsView from "@/views/ChatsView.vue";
+import RegistrationVerify from "@/views/RegistrationVerify.vue";
 
 const routes = [
   {
@@ -35,6 +36,11 @@ const routes = [
     path: '/chats',
     name: 'chats',
     component: ChatsView
+  },
+  {
+    path: '/registration',
+    name: 'registrationVerify',
+    component: RegistrationVerify
   }
 ]
 

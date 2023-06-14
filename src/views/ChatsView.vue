@@ -273,7 +273,7 @@ export default defineComponent({
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <button class="btn btn-success w-100">
+                                        <button class="btn btn-success w-100" v-if="!isRoleOr(['CUSTOMER'])">
                                             Сменить статус
                                         </button>
                                     </div>

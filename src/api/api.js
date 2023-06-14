@@ -20,6 +20,17 @@ const api = {
                 this.token = value.data.token;
             });
     },
+    registration: function (email, password) {
+        return axios.post(config.api + "/registration", {
+            email: email,
+            password: password
+        }, {})
+    },
+    registrationActive: function (code) {
+        return axios.post(config.api + "/activate", {
+            activationCode: code,
+        }, {});
+    },
     profile: function () {
         return axios.get(config.api + "/user", {headers: this.getHeadersLogin()});
     },

@@ -96,7 +96,29 @@ export default defineComponent({
         api.loadSchedule().then(value => {
             this.schedule = value.data
 
-        console.log(this.schedule)
+            for (let i = 0; i < 53; i++) {
+                let skip = false;
+                for (let j = 0; j < this.schedule.length; j++) {
+                    if (this.schedule[j].numberWeek === i) {
+                        skip = true;
+                        break;
+                    }
+                }
+                if(skip)
+                    continue;
+                const mapDay = {}
+                for (let j = 0; j < 7; j++) {
+                    mapDay['' + j] = {
+                        "startTime": 0,
+                        "endTime": 0
+                    }
+                }
+                this.schedule.push({
+                    numberWeek: i,
+                    objDays: mapDay
+                });
+            }
+            console.log(this.schedule)
         })
     },
     methods: {
@@ -118,7 +140,7 @@ export default defineComponent({
                     <div class="card-header">
                         <div class="row row-cols-2">
                             <div class="col d-flex align-items-center justify-content-start">
-                               <h5> <b>Ваше расписание на год</b></h5>
+                                <h5><b>Ваше расписание на год</b></h5>
                             </div>
                             <div class="col">
                                 <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal"
@@ -126,7 +148,8 @@ export default defineComponent({
                                     <b>Заполнить через шаблон</b>
                                 </button>
 
-                                <div class="modal fade" id="templateModel" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                <div class="modal fade" id="templateModel" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel"
                                      aria-hidden="true">
                                     <div class="modal-dialog modal-xl">
                                         <div class="modal-content">
@@ -140,23 +163,27 @@ export default defineComponent({
                                                 <div class="col text-center">
                                                     <div class="row row-cols-8 g-0">
                                                         <div class="col border border-1 p-1">Неделя</div>
-                                                        <div class="col border border-1 p-1" v-for="dayData in headSchedule" :key="dayData">
+                                                        <div class="col border border-1 p-1"
+                                                             v-for="dayData in headSchedule" :key="dayData">
                                                             <b>{{ dayData.text }}</b>
                                                         </div>
                                                     </div>
-                                                    <div class="row row-cols-8 g-0" v-for="week in parsingScheduleTemplate" :key="week">
+                                                    <div class="row row-cols-8 g-0"
+                                                         v-for="week in parsingScheduleTemplate" :key="week">
                                                         <div class="col border border-1 p-1">
-                                                            <b>{{ week.numberWeek + 1 }}</b>
+                                                            <b>{{ week.numberWeek }}</b>
                                                         </div>
                                                         <div class="col border border-1 p-1 btn-cal"
                                                              :style="{'background': new Date().getDay() == index && weekNumber() === week.numberWeek ? 'rgba(24,182,24,0.7)' : ''}"
                                                              v-for="(dayData, index) in week.objDays" :key="dayData"
                                                              data-bs-toggle="tooltip" data-bs-placement="top"
                                                              :title="new Date(((week.numberWeek) * 7 + parseInt(index)) * 24 * 60 * 60 * 1000 + new Date(new Date().getFullYear(), 0, 1).getTime()).toLocaleDateString()">
-                                                            <div class="w-100" v-if="dayData.endTime !== 0 && dayData.startTime !== 0">
+                                                            <div class="w-100"
+                                                                 v-if="dayData.endTime !== 0 && dayData.startTime !== 0">
                                                                 {{ dayData.startTime }}:00-{{ dayData.endTime }}:00
                                                             </div>
-                                                            <div class="w-100" v-if="!(dayData.endTime !== 0 && dayData.startTime !== 0)">
+                                                            <div class="w-100"
+                                                                 v-if="!(dayData.endTime !== 0 && dayData.startTime !== 0)">
                                                                 -
                                                             </div>
                                                         </div>
@@ -188,11 +215,11 @@ export default defineComponent({
                         <b>{{ dayData.text }}</b>
                     </div>
                 </div>
-                <div class="row row-cols-8 g-0" v-for="week in parsingSchedule" :key="week">
-                    <div class="col border border-1 p-1">
-                        <b>{{ week.numberWeek + 1 }}</b>
+                <div class="row row-cols-8 g-0" v-for="(week, index) in parsingSchedule" :key="week">
+                    <div class="col border border-1 p-1" v-if="index !== 0">
+                        <b>{{ week.numberWeek }}</b>
                     </div>
-                    <div class="col border border-1 p-1 btn-cal"
+                    <div class="col border border-1 p-1 btn-cal"  v-if="index !== 0"
                          :style="{'background': new Date().getDay() == index && weekNumber() === week.numberWeek +1 ? 'rgba(24,182,24,0.7)' : ''}"
                          v-for="(dayData, index) in week.objDays" :key="dayData"
                          data-bs-toggle="tooltip" data-bs-placement="top"

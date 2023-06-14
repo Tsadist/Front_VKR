@@ -2,10 +2,12 @@
 import {dicStatus} from "@/api/dictionary";
 import api from "@/api/api";
 import OrderInputModal from "@/components/OrderInputModal.vue";
+import profileUser from "@/mixins/profileUser";
 
 export default {
     name: "OrderCard",
     components: {OrderInputModal},
+    mixins: [profileUser],
     computed: {
         dicOrder() {
             return dicStatus.orderStatuses
@@ -175,7 +177,7 @@ export default {
             <div class="card-text pt-2">
                 <div class="row row-cols-2 g-2">
                     <div class="col" v-if="orderData.orderStatus.value === 'WAITING_FOR_PAYMENT'">
-                        <button class="btn btn-primary w-100">
+                        <button class="btn btn-primary w-100"  v-if="isRoleOr(['CUSTOMER'])">
                             Оплатить
                         </button>
                     </div>
