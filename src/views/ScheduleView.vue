@@ -104,7 +104,7 @@ export default defineComponent({
                         break;
                     }
                 }
-                if(skip)
+                if (skip)
                     continue;
                 const mapDay = {}
                 for (let j = 0; j < 7; j++) {
@@ -219,16 +219,55 @@ export default defineComponent({
                     <div class="col border border-1 p-1" v-if="index !== 0">
                         <b>{{ week.numberWeek }}</b>
                     </div>
-                    <div class="col border border-1 p-1 btn-cal"  v-if="index !== 0"
+                    <div class="col border border-1 p-1 btn-cal" v-if="index !== 0"
                          :style="{'background': new Date().getDay() == index && weekNumber() === week.numberWeek +1 ? 'rgba(24,182,24,0.7)' : ''}"
                          v-for="(dayData, index) in week.objDays" :key="dayData"
                          data-bs-toggle="tooltip" data-bs-placement="top"
                          :title="new Date(((week.numberWeek) * 7 + parseInt(index)) * 24 * 60 * 60 * 1000 + new Date(new Date().getFullYear(), 0, 1).getTime()).toLocaleDateString()">
-                        <div class="w-100" v-if="dayData.endTime !== 0 && dayData.startTime !== 0">
+
+                        <div class="w-100" v-if="dayData.endTime !== 0 && dayData.startTime !== 0"
+                             data-bs-toggle="modal"
+                             :data-bs-target="'#editDate' + week.numberWeek + '_' + index">
                             {{ dayData.startTime }}:00-{{ dayData.endTime }}:00
                         </div>
-                        <div class="w-100" v-if="!(dayData.endTime !== 0 && dayData.startTime !== 0)">
+                        <div class="w-100" v-if="!(dayData.endTime !== 0 && dayData.startTime !== 0)"
+                             data-bs-toggle="modal"
+                             :data-bs-target="'#editDate' + week.numberWeek + '_' + index">
                             -
+                        </div>
+
+
+                        <div class="modal fade" :id="'editDate' + week.numberWeek + '_' + index" tabindex="-1"
+                             aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Изменение времени</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row row-cols-2 g-2">
+                                            <div class="col">
+                                                <input class="form-control" type="time" v-model="dayData.startTime">
+                                            </div>
+                                            <div class="col">
+                                                <input class="form-control" type="time" v-model="dayData.endTime">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            Закрыть
+                                        </button>
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                                            Сохранить
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>

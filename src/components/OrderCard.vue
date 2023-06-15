@@ -81,6 +81,12 @@ export default {
                     return this.additionalService[i];
             }
             return {};
+        },
+        payment(){
+            api.paymentOrder(this.orderData.id)
+                .then(value => {
+                    window.location.replace(value.data.paymentURL);
+                })
         }
     }
 }
@@ -177,7 +183,7 @@ export default {
             <div class="card-text pt-2">
                 <div class="row row-cols-2 g-2">
                     <div class="col" v-if="orderData.orderStatus.value === 'WAITING_FOR_PAYMENT'">
-                        <button class="btn btn-primary w-100"  v-if="isRoleOr(['CUSTOMER'])">
+                        <button class="btn btn-primary w-100"  v-if="isRoleOr(['CUSTOMER'])" @click="payment">
                             Оплатить
                         </button>
                     </div>
@@ -190,10 +196,46 @@ export default {
                                            :data="orderData" :additional-service="additionalService"/>
                     </div>
 
-                    <div class="col" v-if="orderData.orderStatus.value !== 'COMPLETED'">
+                    <div class="col" v-if="orderData.orderStatus.value !== 'COMPLETED' && isRoleOr(['CUSTOMER'])">
                         <button class="btn btn-primary w-100" @click="deleteThis">
                             Отменить
                         </button>
+
+                    </div>
+                    <div class="col" v-if="orderData.orderStatus.value !== 'COMPLETED' && isRoleOr(['CLEANER'])">
+                        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal"
+                                :data-bs-target="'#otkas' + orderData.id">
+                            Отказаться от заказа
+                        </button>
+                        <div class="modal fade" :id="'otkas' + orderData.id" tabindex="-1" aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Отказаться от заказа</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row row-cols-1 g-2">
+                                            <div class="col">
+                                                <label for="chatName" class="form-label">Какая причиная отказа?</label>
+                                                <input type="text" class="form-control" id="chatName" placeholder="Причина отказа">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            Закрыть
+                                        </button>
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="createTopic">
+                                            Отказаться
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

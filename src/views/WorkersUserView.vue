@@ -235,9 +235,45 @@ export default defineComponent({
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <button class="btn btn-warning w-100">
+                                        <button type="button" class="btn btn-warning w-100" data-bs-toggle="modal"
+                                                :data-bs-target="'#editRole' + user.name">
                                             Изменить должность
                                         </button>
+                                        <div class="modal fade" :id="'editRole' + user.name" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Изменение должности {{user.name}} {{ user.surname}}</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row row-cols-1 g-2">
+                                                            <div class="col">
+                                                                <label for="cleaningTypeInput" class="form-label">Должность сотрудника</label>
+                                                                <select v-model="createUser.userRole" id="cleaningTypeInput"
+                                                                        class="form-select">
+                                                                    <option disabled value="">Выберите один из вариантов</option>
+                                                                    <option>MANAGER</option>
+                                                                    <option>CLEANER</option>
+                                                                    <option>MODERATOR</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                            Закрыть
+                                                        </button>
+                                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                                                            Сохранить
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col">
                                         <button class="btn btn-danger w-100">

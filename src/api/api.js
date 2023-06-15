@@ -57,10 +57,13 @@ const api = {
     editOrder: function (orderId, body) {
         return axios.put(config.api + "/order/" + orderId + '/edit', body, {headers: this.getHeadersLogin()});
     },
+    paymentOrder: function (orderId) {
+        return axios.get(config.api + '/order/' + orderId + '/paymentURL', {headers: this.getHeadersLogin()});
+    },
 
 
     loadSchedule: function () {
-        return axios.get(config.api + "/schedule",  {headers: this.getHeadersLogin()});
+        return axios.get(config.api + "/schedule", {headers: this.getHeadersLogin()});
     },
 
 
@@ -69,18 +72,20 @@ const api = {
     },
 
 
-
     loadChats: function () {
-        return axios.get(config.api + "/chats",  {headers: this.getHeadersLogin()});
+        return axios.get(config.api + "/chats", {headers: this.getHeadersLogin()});
     },
     loadMessages: function (id) {
-        return axios.get(config.api + "/messages/" + id,  {headers: this.getHeadersLogin()});
+        return axios.get(config.api + "/messages/" + id, {headers: this.getHeadersLogin()});
     },
     createChat: function (topic) {
-        return axios.post(config.api + "/chat/create", {'topic': topic},  {headers: this.getHeadersLogin()});
+        return axios.post(config.api + "/chat/create", {'topic': topic}, {headers: this.getHeadersLogin()});
     },
     createMessage: function (id, text) {
-        return axios.post(config.api + "/message/create", {'text': text, 'chatId': id},  {headers: this.getHeadersLogin()});
+        return axios.post(config.api + "/message/create", {
+            'text': text,
+            'chatId': id
+        }, {headers: this.getHeadersLogin()});
     },
 };
 
